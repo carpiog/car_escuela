@@ -1,13 +1,11 @@
 import { Dropdown } from "bootstrap";
 import Chart from "chart.js/auto";
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const canvasTipos = document.getElementById('chartTipos');
     const ctxTipos = canvasTipos.getContext('2d');
     const canvasGrados = document.getElementById('chartGrados');
     const ctxGrados = canvasGrados.getContext('2d');
-    const canvasTendencias = document.getElementById('chartTendencias');
-    const ctxTendencias = canvasTendencias.getContext('2d');
     const canvasFaltas = document.getElementById('chartFaltas');
     const ctxFaltas = canvasFaltas.getContext('2d');
 
@@ -35,79 +33,55 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    const chartTipos = new Chart(ctxTipos, { 
-        type: 'bar', 
-        data: { 
-            labels: [], 
-            datasets: [{ 
-                label: 'Total de Sanciones', 
-                data: [], 
-                backgroundColor: COLOR_PALETTE 
-            }] 
+    const chartTipos = new Chart(ctxTipos, {
+        type: 'bar',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Total de Sanciones',
+                data: [],
+                backgroundColor: COLOR_PALETTE
+            }]
         },
         options: chartOptions
     });
 
-    const chartGrados = new Chart(ctxGrados, { 
-        type: 'bar', 
-        data: { 
-            labels: [], 
-            datasets: [{ 
-                label: 'Total de Sanciones', 
-                data: [], 
-                backgroundColor: COLOR_PALETTE 
-            }] 
+    const chartGrados = new Chart(ctxGrados, {
+        type: 'bar',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Total de Sanciones',
+                data: [],
+                backgroundColor: COLOR_PALETTE
+            }]
         },
         options: chartOptions
     });
 
-    const chartTendencias = new Chart(ctxTendencias, { 
-        type: 'line', 
-        data: { 
-            labels: [], 
-            datasets: [{ 
-                label: 'Total de Sanciones', 
-                data: [], 
-                borderColor: 'rgba(75,192,192,1)', 
-                backgroundColor: 'rgba(75,192,192,0.2)', 
-                borderWidth: 2,
-                fill: true
-            }] 
-        },
-        options: {
-            ...chartOptions,
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-
-    const chartFaltas = new Chart(ctxFaltas, { 
-        type: 'bar', 
-        data: { 
-            labels: [], 
-            datasets: [{ 
-                label: 'Total de Faltas', 
-                data: [], 
-                backgroundColor: COLOR_PALETTE 
-            }] 
+    const chartFaltas = new Chart(ctxFaltas, {
+        type: 'bar',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Total de Faltas',
+                data: [],
+                backgroundColor: COLOR_PALETTE
+            }]
         },
         options: chartOptions
     });
 
     const getEstadisticas = async () => {
         try {
-            // Mostrar un loader o indicador de carga
-            btnActualizar.innerHTML = 'Cargando...';
+            // Mostrar spinner o deshabilitar botón
+            btnActualizar.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Cargando...';
             btnActualizar.disabled = true;
 
             // Peticiones de datos
             const endpoints = [
                 { url: '/car_escuela/API/estadisticas/tipos', name: 'tipos' },
                 { url: '/car_escuela/API/estadisticas/grados', name: 'grados' },
-                { url: '/car_escuela/API/estadisticas/tendencias', name: 'tendencias' },
                 { url: '/car_escuela/API/estadisticas/faltas', name: 'faltas' }
             ];
 
@@ -115,47 +89,42 @@ document.addEventListener('DOMContentLoaded', function() {
                 endpoints.map(endpoint => fetch(endpoint.url))
             );
 
-            // Verificar respuestas
-            responses.forEach((response, index) => {
-                if (!response.ok) {
-                    throw new Error(`Error al obtener ${endpoints[index].name}`);
-                }
-            });
-
-            // Parsear datos
             const datasetsData = await Promise.all(
-                responses.map(response => response.json())
+                responses.map(async (response, index) => {
+                    if (!response.ok) {
+                        throw new Error(`Error en ${endpoints[index].name}: ${response.statusText}`);
+                    }
+                    const data = await response.json();
+                    console.log(`Datos recibidos para ${endpoints[index].name}:`, data); // Ver datos en consola
+                    return data;
+                })
             );
 
-            // Limpiar gráficos
-            [chartTipos, chartGrados, chartTendencias, chartFaltas].forEach(chart => {
-                chart.data.labels = [];
-                chart.data.datasets[0].data = [];
-            });
+            // Actualizar gráficos con validación
+            if (Array.isArray(datasetsData[0])) {
+                chartTipos.data.labels = datasetsData[0].map(r => r.tipo_falta || 'Desconocido');
+                chartTipos.data.datasets[0].data = datasetsData[0].map(r => r.total_sanciones || 0);
+            }
+
+            if (Array.isArray(datasetsData[1])) {
+                chartGrados.data.labels = datasetsData[1].map(r => r.grado || 'Desconocido');
+                chartGrados.data.datasets[0].data = datasetsData[1].map(r => r.total_sanciones || 0);
+            }
+
+            if (Array.isArray(datasetsData[2])) {
+                chartFaltas.data.labels = datasetsData[2].map(r => r.descripcion || 'Sin Descripción');
+                chartFaltas.data.datasets[0].data = datasetsData[2].map(r => r.total || 0);
+            }
 
             // Actualizar gráficos
-            chartTipos.data.labels = datasetsData[0].map(r => r.tipo);
-            chartTipos.data.datasets[0].data = datasetsData[0].map(r => r.total_sanciones);
-
-            chartGrados.data.labels = datasetsData[1].map(r => r.grado);
-            chartGrados.data.datasets[0].data = datasetsData[1].map(r => r.total_sanciones);
-
-            chartTendencias.data.labels = datasetsData[2].map(r => r.nombre_mes);
-            chartTendencias.data.datasets[0].data = datasetsData[2].map(r => r.total_sanciones);
-
-            chartFaltas.data.labels = datasetsData[3].map(r => r.descripcion);
-            chartFaltas.data.datasets[0].data = datasetsData[3].map(r => r.total);
-
-            // Actualizar gráficos
-            [chartTipos, chartGrados, chartTendencias, chartFaltas].forEach(chart => chart.update());
+            [chartTipos, chartGrados, chartFaltas].forEach(chart => chart.update());
 
             // Restaurar botón
             btnActualizar.innerHTML = 'Actualizar';
             btnActualizar.disabled = false;
 
         } catch (error) {
-            console.error('Error en la carga de datos: ', error);
-            // Manejar error en UI
+            console.error('Error en la carga de datos:', error);
             btnActualizar.innerHTML = 'Reintentar';
             btnActualizar.disabled = false;
             alert('No se pudieron cargar las estadísticas. Intente de nuevo.');

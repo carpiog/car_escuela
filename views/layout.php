@@ -17,7 +17,7 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand" href="/control_arresto/">
+            <a class="navbar-brand" href="/car_escuela/">
                 <img src="<?= asset('./images/CCEG.png') ?>" width="35px" alt="cit">
             </a>
             <div class="collapse navbar-collapse" id="navbarToggler">
@@ -28,13 +28,13 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark">
                             <li>
-                                <a class="dropdown-item" href="/control_arresto/instructor">
+                                <a class="dropdown-item" href="/car_escuela/instructor">
                                     <i class="bi bi-person-plus me-2"></i>Registrar Instructores
                                 </a>
-                                <a class="dropdown-item" href="/control_arresto/alumno">
+                                <a class="dropdown-item" href="/car_escuela/alumno">
                                     <i class="bi bi-person-plus me-2"></i>Registrar Alumnos
                                 </a>
-                                <a class="dropdown-item" href="/control_arresto/sancion">
+                                <a class="dropdown-item" href="/car_escuela/sancion">
                                     <i class="bi bi-person-plus me-2"></i>Registrar Arresto
                                 </a>
                             </li>
@@ -46,17 +46,17 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark">
                             <li>
-                                <a class="dropdown-item" href="/control_arresto/falta?tipo=LEVE">
+                                <a class="dropdown-item" href="/car_escuela/falta?tipo=LEVE">
                                     <i class="bi bi-info-circle me-2"></i>Faltas Leves
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="/control_arresto/falta?tipo=GRAVE">
+                                <a class="dropdown-item" href="/car_escuela/falta?tipo=GRAVE">
                                     <i class="bi bi-exclamation-circle me-2"></i>Faltas Graves
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="/control_arresto/falta?tipo=GRAVISIMAS">
+                                <a class="dropdown-item" href="/car_escuela/falta?tipo=GRAVISIMAS">
                                     <i class="bi bi-exclamation-diamond me-2"></i>Faltas Gravísimas
                                 </a>
                             </li>
@@ -64,7 +64,7 @@
                                 <hr class="dropdown-divider">
                             </li>
                             <li>
-                                <a class="dropdown-item" href="/control_arresto/falta">
+                                <a class="dropdown-item" href="/car_escuela/falta">
                                     <i class="bi bi-card-list me-2"></i>Todas las Faltas
                                 </a>
                             </li>
@@ -78,12 +78,12 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark">
                             <li>
-                                <a class="dropdown-item" href="/control_arresto/demerito">
+                                <a class="dropdown-item" href="/car_escuela/demerito">
                                     <i class="bi bi-list me-2"></i>Ver Demeritos
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="/control_arresto/estadisticas">
+                                <a class="dropdown-item" href="/car_escuela/estadisticas">
                                     <i class="bi bi-bar-chart me-2"></i>Estadísticas
                                 </a>
                             </li>

@@ -40,21 +40,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Tendencias Mensuales de Sanciones -->
-            <div class="col-12">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h3 class="h5 text-center text-dark mb-4">
-                            Tendencias Mensuales de Sanciones
-                        </h3>
-                        <div class="h-100">
-                            <canvas id="chartTendencias"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Faltas Más Frecuentes -->
             <div class="col-12">
                 <div class="card shadow-sm">

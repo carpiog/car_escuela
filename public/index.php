@@ -5,7 +5,7 @@ use Controllers\AlumnoController;
 use MVC\Router;
 use Controllers\AppController;
 use Controllers\DemeritoController;
-use Controllers\EstadisticasController;
+use Controllers\EstadisticaController;
 use Controllers\FaltaController;
 use Controllers\InstructorController;
 use Controllers\SancionController;
@@ -47,12 +47,11 @@ $router->get('/API/demerito/buscar', [DemeritoController::class, 'buscarAPI']);
 $router->get('/API/demerito/riesgo', [DemeritoController::class, 'alumnosRiesgoAPI']);
 
 // RUTAS PARA ESTADÍSTICAS DE SANCIONES
-$router->get('/estadisticas', [EstadisticasController::class, 'index']);
-$router->get('/API/estadisticas/tipos', [EstadisticasController::class, 'tiposAPI']);
-$router->get('/API/estadisticas/grados', [EstadisticasController::class, 'gradosAPI']);
-$router->get('/API/estadisticas/tendencias', [EstadisticasController::class, 'tendenciasAPI']);
-$router->get('/API/estadisticas/faltas', [EstadisticasController::class, 'faltasAPI']);
-$router->get('/API/estadisticas/todas', [EstadisticasController::class, 'todasAPI']);
+$router->get('/estadisticas', [EstadisticaController::class, 'index']);
+$router->get('/API/estadisticas/tipos', [EstadisticaController::class, 'tiposAPI']);
+$router->get('/API/estadisticas/grados', [EstadisticaController::class, 'gradosAPI']);
+$router->get('/API/estadisticas/faltas', [EstadisticaController::class, 'faltasAPI']);
+$router->get('/API/estadisticas/todas', [EstadisticaController::class, 'todasAPI']);
 
 // Comprueba y valida las rutas, que existan y les asigna las funciones del Controlador
 $router->comprobarRutas();

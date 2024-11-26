@@ -2,165 +2,90 @@
 
 namespace Controllers;
 
-use Model\EstadisticasSancion;
-use MVC\Router;
 use Exception;
+use Model\ActiveRecord;
+use MVC\Router;
 
-class EstadisticasController {
+class EstadisticaController {
 
-    public static function index(Router $router): void {
-        // Cargar datos iniciales para la vista
-        $tiposSanciones = EstadisticasSancion::obtenerEstadisticasPorTipo();
-        $gradosSanciones = EstadisticasSancion::obtenerEstadisticasPorGrado();
-        $tendenciasMensuales = EstadisticasSancion::obtenerTendenciasMensuales();
-        $faltasFrecuentes = EstadisticasSancion::obtenerFaltasFrecuentes();
-
-        $router->render('estadisticas/index', [
-            'tiposSanciones' => $tiposSanciones,
-            'gradosSanciones' => $gradosSanciones,
-            'tendenciasMensuales' => $tendenciasMensuales,
-            'faltasFrecuentes' => $faltasFrecuentes
-        ]);
+    public static function index(Router $router) {
+        // Renderiza la vista principal de estadísticas
+        $router->render('estadisticas/index');
     }
 
-    private static function jsonResponse($datos, bool $error = false, string $mensaje = ''): void {
-        header('Content-Type: application/json');
-        echo json_encode([
-            'error' => $error,
-            'mensaje' => $mensaje,
-            'datos' => $datos
-        ]);
-        exit;
-    }
-
-    public static function estadisticasGeneralesAPI(): void {
+    public static function tiposAPI() {
         try {
-            $datosGenerales = [
-                'tiposSanciones' => EstadisticasSancion::obtenerEstadisticasPorTipo(),
-                'gradosSanciones' => EstadisticasSancion::obtenerEstadisticasPorGrado(),
-                'tendenciasMensuales' => EstadisticasSancion::obtenerTendenciasMensuales(),
-                'faltasFrecuentes' => EstadisticasSancion::obtenerFaltasFrecuentes()
-            ];
-            self::jsonResponse($datosGenerales);
+            $sql = 'SELECT 
+                    tf.tip_nombre AS tipo_falta,
+                    COUNT(san.san_id) AS total_sanciones
+                    FROM 
+                    car_sancion san
+                    JOIN 
+                    car_falta fal ON san.san_falta_id = fal.fal_id
+                    JOIN 
+                    car_tipo_falta tf ON fal.fal_categoria_id = tf.tip_id
+                    GROUP BY 
+                    tf.tip_nombre
+                    ORDER BY 
+                    total_sanciones DESC;';
+
+            $datos = ActiveRecord::fetchArray($sql);
+
+            echo json_encode($datos);
         } catch (Exception $e) {
-            self::jsonResponse([], true, $e->getMessage());
+            self::handleException($e, 'Error al obtener estadísticas por tipo.');
         }
     }
 
-    public static function tiposAPI(): void {
+    public static function gradosAPI() {
         try {
-            $datos = EstadisticasSancion::obtenerEstadisticasPorTipo();
-            self::jsonResponse($datos);
+            $sql = 'SELECT 
+                    ga.gra_nombre AS grado,
+                    COUNT(san.san_id) AS total_sanciones,
+                    ga.gra_orden  
+                    FROM 
+                    car_sancion san
+                    JOIN 
+                    car_alumno alu ON san.san_catalogo = alu.alu_id
+                    JOIN 
+                    car_grado_academico ga ON alu.alu_grado_id = ga.gra_id
+                    GROUP BY 
+                    ga.gra_nombre, ga.gra_orden  
+                    ORDER BY 
+                    ga.gra_orden DESC';
+
+            $datos = ActiveRecord::fetchArray($sql);
+
+            echo json_encode($datos);
         } catch (Exception $e) {
-            self::jsonResponse([], true, $e->getMessage());
+            self::handleException($e, 'Error al obtener estadísticas por grado.');
         }
     }
 
-    public static function gradosAPI(): void {
+    public static function faltasAPI() {
         try {
-            $datos = EstadisticasSancion::obtenerEstadisticasPorGrado();
-            self::jsonResponse($datos);
+            $sql = 'SELECT f.fal_descripcion AS descripcion, COUNT(*) AS total
+                FROM car_sancion s
+                INNER JOIN car_falta f ON s.san_falta_id = f.fal_id
+                WHERE s.san_situacion = 1
+                GROUP BY f.fal_descripcion';
+
+            $datos = ActiveRecord::fetchArray($sql);
+
+            echo json_encode($datos);
         } catch (Exception $e) {
-            self::jsonResponse([], true, $e->getMessage());
+            self::handleException($e, 'Error al obtener estadísticas de faltas frecuentes.');
         }
-    }
-
-    public static function tendenciasAPI(): void {
-        try {
-            $datos = EstadisticasSancion::obtenerTendenciasMensuales();
-            self::jsonResponse($datos);
-        } catch (Exception $e) {
-            self::jsonResponse([], true, $e->getMessage());
-        }
-    }
-
-    public static function faltasAPI(): void {
-        try {
-            $datos = EstadisticasSancion::obtenerFaltasFrecuentes();
-            self::jsonResponse($datos);
-        } catch (Exception $e) {
-            self::jsonResponse([], true, $e->getMessage());
-        }
-    }
-
-    public static function exportarCSV(): void {
-        try {
-            // Obtener todos los datos
-            $tiposSanciones = EstadisticasSancion::obtenerEstadisticasPorTipo();
-            $gradosSanciones = EstadisticasSancion::obtenerEstadisticasPorGrado();
-            $tendenciasMensuales = EstadisticasSancion::obtenerTendenciasMensuales();
-            $faltasFrecuentes = EstadisticasSancion::obtenerFaltasFrecuentes();
-
-            // Generar archivo CSV
-            header('Content-Type: text/csv; charset=utf-8');
-            header('Content-Disposition: attachment; filename=estadisticas_sanciones.csv');
-            $output = fopen('php://output', 'w');
-
-            // Escribir encabezados y datos para cada conjunto
-            self::escribirSeccionCSV($output, 'Sanciones por Tipo', $tiposSanciones);
-            self::escribirSeccionCSV($output, 'Sanciones por Grado', $gradosSanciones);
-            self::escribirSeccionCSV($output, 'Tendencias Mensuales', $tendenciasMensuales);
-            self::escribirSeccionCSV($output, 'Faltas Frecuentes', $faltasFrecuentes);
-
-            fclose($output);
-            exit;
-        } catch (Exception $e) {
-            // Manejar error de exportación
-            header('Content-Type: application/json');
-            echo json_encode([
-                'error' => true, 
-                'mensaje' => 'Error al exportar: ' . $e->getMessage()
-            ]);
-            exit;
-        }
-    }
-
-    private static function escribirSeccionCSV($output, string $titulo, array $datos): void {
-        // Escribir título de sección
-        fputcsv($output, [$titulo]);
-        
-        // Si hay datos, escribir encabezados
-        if (!empty($datos)) {
-            fputcsv($output, array_keys($datos[0]));
-            
-            // Escribir datos
-            foreach ($datos as $fila) {
-                fputcsv($output, $fila);
-            }
-        }
-        
-        // Línea en blanco entre secciones
-        fputcsv($output, []);
     }
 
     /**
-     * Generar informe detallado
+     * Método para manejar excepciones y devolver una respuesta JSON.
      */
-    public static function generarInforme(): void {
-        try {
-            $informe = [
-                'resumen' => [
-                    'total_sanciones' => array_sum(array_column(
-                        EstadisticasSancion::obtenerEstadisticasPorTipo(), 
-                        'total_sanciones'
-                    )),
-                    'total_alumnos_sancionados' => array_sum(array_column(
-                        EstadisticasSancion::obtenerEstadisticasPorTipo(), 
-                        'total_alumnos'
-                    ))
-                ],
-                'tipos_sanciones' => EstadisticasSancion::obtenerEstadisticasPorTipo(),
-                'sanciones_por_grado' => EstadisticasSancion::obtenerEstadisticasPorGrado(),
-                'tendencias_mensuales' => EstadisticasSancion::obtenerTendenciasMensuales(),
-                'faltas_frecuentes' => EstadisticasSancion::obtenerFaltasFrecuentes()
-            ];
-
-            // Renderizar vista de informe o devolver JSON
-            header('Content-Type: application/json');
-            echo json_encode($informe);
-            exit;
-        } catch (Exception $e) {
-            self::jsonResponse([], true, $e->getMessage());
-        }
+    private static function handleException(Exception $e, $mensaje) {
+        echo json_encode([
+            'detalle' => $e->getMessage(),
+            'mensaje' => $mensaje,
+            'codigo' => 0
+        ]);
     }
 }
