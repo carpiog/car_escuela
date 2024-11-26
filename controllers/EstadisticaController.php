@@ -23,11 +23,15 @@ class EstadisticaController {
                     JOIN 
                     car_falta fal ON san.san_falta_id = fal.fal_id
                     JOIN 
-                    car_tipo_falta tf ON fal.fal_categoria_id = tf.tip_id
+                    car_categoria_falta cf ON fal.fal_categoria_id = cf.cat_id
+                    JOIN 
+                    car_tipo_falta tf ON cf.cat_tipo_id = tf.tip_id
+                    WHERE 
+                    san.san_situacion = 1
                     GROUP BY 
                     tf.tip_nombre
                     ORDER BY 
-                    total_sanciones DESC;';
+                    total_sanciones DESC';
 
             $datos = ActiveRecord::fetchArray($sql);
 
