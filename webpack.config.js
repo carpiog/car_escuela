@@ -11,6 +11,7 @@ module.exports = {
     'js/sancion/index': './src/js/sancion/index.js',
     'js/demerito/index': './src/js/demerito/index.js',
     'js/estadisticas/index': './src/js/estadisticas/index.js',
+    'js/cumplimiento/index': './src/js/cumplimiento/index.js',
   },
   output: {
     filename: '[name].js',

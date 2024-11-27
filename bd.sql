@@ -78,7 +78,7 @@ CREATE TABLE car_cumplimiento_arresto (
     cum_id SERIAL PRIMARY KEY,
     cum_sancion_id INTEGER NOT NULL REFERENCES car_sancion(san_id),
     cum_fecha DATE NOT NULL,
-    cum_estado CHAR(1) NOT NULL DEFAULT 'P', -- P: Pendiente, E: En proceso, C: Cumplido, T: Trasladado, A: Anulado
+    cum_estado CHAR(1) NOT NULL DEFAULT 'P', -- P: Pendiente, C: Cumplio, T: Traslado, F: Falto
     cum_horas_cumplidas INTEGER DEFAULT 0,    -- Este es el correcto
     cum_horas_pendientes INTEGER DEFAULT 0,
     cum_fin_semana_inicio DATE, -- Fecha del sábado que inicia a cumplir

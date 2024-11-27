@@ -128,22 +128,23 @@ class AlumnoController
         }
     }
 
-    public static function eliminarAPI() {
+    public static function eliminarAPI()
+    {
         header('Content-Type: application/json');
-        
+
         try {
             if (!isset($_POST['alu_id'])) {
                 throw new Exception("No se recibió el ID del Alumno");
             }
 
             $_POST['alu_id'] = filter_var($_POST['alu_id'], FILTER_SANITIZE_NUMBER_INT);
-            
+
             if (!$_POST['alu_id']) {
                 throw new Exception("ID de Alumno inválido");
             }
 
             $alumno = Alumno::find($_POST['alu_id']);
-            
+
             if (!$alumno) {
                 throw new Exception("Alumno no encontrado");
             }

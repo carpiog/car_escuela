@@ -7,14 +7,14 @@ class Alumno extends ActiveRecord
     protected static $tabla = 'car_alumno';
     protected static $idTabla = 'alu_id';
     protected static $columnasDB = [
-        'alu_id', 
-        'alu_catalogo', 
-        'alu_primer_nombre', 
-        'alu_segundo_nombre', 
-        'alu_primer_apellido', 
-        'alu_segundo_apellido', 
-        'alu_grado_id', 
-        'alu_rango_id', 
+        'alu_id',
+        'alu_catalogo',
+        'alu_primer_nombre',
+        'alu_segundo_nombre',
+        'alu_primer_apellido',
+        'alu_segundo_apellido',
+        'alu_grado_id',
+        'alu_rango_id',
         'alu_situacion'
     ];
 
@@ -51,7 +51,7 @@ class Alumno extends ActiveRecord
                 AND alu_situacion = 1";
 
         if ($id) {
-            $sql .= " AND alu_id != " . self::$db->quote($id); 
+            $sql .= " AND alu_id != " . self::$db->quote($id);
         }
 
         $resultado = self::fetchFirst($sql);
@@ -87,10 +87,48 @@ class Alumno extends ActiveRecord
 
         return self::fetchArray($sql);
     }
-        // En lugar de eliminar físicamente, actualizamos la situación a 0
-        public function eliminar()
-        {
-            $this->alu_situacion = 0;
-            return $this->actualizar();
-        }
+
+    // Agregar este método a tu clase Alumno
+    public static function obtenerSancionesAlumno($id)
+    {
+        $sql = "SELECT 
+                a.alu_catalogo,
+                a.alu_primer_nombre || ' ' || a.alu_segundo_nombre || ' ' || 
+                a.alu_primer_apellido || ' ' || a.alu_segundo_apellido AS alumno_nombre,
+                g.gra_nombre,
+                r.ran_nombre,
+                s.san_fecha_sancion,
+                s.san_horas_arresto,
+                s.san_demeritos,
+                f.fal_descripcion,
+                cf.cat_nombre AS categoria_falta,
+                tf.tip_nombre AS tipo_falta
+            FROM 
+                car_alumno a
+            JOIN 
+                car_grado_academico g ON a.alu_grado_id = g.gra_id
+            JOIN 
+                car_rango r ON a.alu_rango_id = r.ran_id
+            LEFT JOIN 
+                car_sancion s ON a.alu_id = s.san_catalogo
+            LEFT JOIN 
+                car_falta f ON s.san_falta_id = f.fal_id
+            LEFT JOIN 
+                car_categoria_falta cf ON f.fal_categoria_id = cf.cat_id
+            LEFT JOIN 
+                car_tipo_falta tf ON cf.cat_tipo_id = tf.tip_id
+            WHERE 
+                a.alu_situacion = 1 
+                AND a.alu_id = " . self::$db->quote($id) . "
+            ORDER BY 
+                s.san_fecha_sancion DESC";
+
+        return self::fetchArray($sql);
+    }
+    // En lugar de eliminar físicamente, actualizamos la situación a 0
+    public function eliminar()
+    {
+        $this->alu_situacion = 0;
+        return $this->actualizar();
+    }
 }

@@ -1,0 +1,35 @@
+.titulo { 
+    font-size: 18px; 
+    font-weight: bold; 
+    text-align: center; 
+    margin-bottom: 20px;
+}
+.subtitulo {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+.info-alumno {
+    margin-bottom: 5px;
+    font-size: 12px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+    text-align: center;
+    padding: 8px;
+    font-size: 11px;
+}
+td {
+    padding: 6px;
+    font-size: 10px;
+    border: 1px solid #ddd;
+}
+.text-center { text-align: center; }
+.text-left { text-align: left; }
