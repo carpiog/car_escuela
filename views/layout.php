@@ -69,14 +69,14 @@
                     <!-- Demeritos Dropdown -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle fw-bold" href="#" data-bs-toggle="dropdown">
-                            <i class="bi bi-award"></i> Deméritos
+                            <i class="bi bi-award"></i> Estadisticas
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark">
                             <li><a class="dropdown-item" href="/car_escuela/demerito">
-                                    <i class="bi bi-list-stars"></i> Ver Deméritos
+                                    <i class="bi bi-list-stars"></i>Demeritos por grado
                                 </a></li>
                             <li><a class="dropdown-item" href="/car_escuela/estadisticas">
-                                    <i class="bi bi-graph-up"></i> Estadísticas
+                                    <i class="bi bi-graph-up"></i>Generales
                                 </a></li>
                         </ul>
                     </li>

@@ -33,6 +33,10 @@ const datatable = new DataTable('#tablaAlumno', {
             data: 'alu_catalogo'
         },
         {
+            title: 'Sexo',
+            data: 'alu_sexo'
+        },
+        {
             title: 'Grado',
             data: 'grado_nombre'
         },
@@ -60,6 +64,7 @@ const datatable = new DataTable('#tablaAlumno', {
                     <button class='btn btn-warning btn-sm modificar' title='MODIFICAR' 
                         data-alu_id="${row.alu_id}"
                         data-alu_catalogo="${row.alu_catalogo}"
+                        data-alu_sexo="${row.alu_sexo}"
                         data-alu_grado_id="${row.alu_grado_id}"
                         data-alu_rango_id="${row.alu_rango_id}"
                         data-alu_primer_nombre="${row.alu_primer_nombre}"
@@ -146,6 +151,7 @@ const traerDatos = (e) => {
     // Asignar valores a los campos del formulario
     formulario.alu_id.value = dataset.alu_id;
     formulario.alu_catalogo.value = dataset.alu_catalogo;
+    formulario.alu_sexo.value = dataset.alu_sexo;
     formulario.alu_grado_id.value = dataset.alu_grado_id;
     formulario.alu_rango_id.value = dataset.alu_rango_id;
     formulario.alu_primer_nombre.value = dataset.alu_primer_nombre;

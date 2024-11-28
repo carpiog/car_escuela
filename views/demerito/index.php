@@ -2,7 +2,7 @@
   <!-- Header -->
   <div class="row mb-4">
     <div class="col-12 text-center">
-      <h1 class="display-5 fw-bold text-primary mb-3">Control de Deméritos</h1>
+      <h1 class="display-5 fw-bold text-primary mb-3">Promedio de Deméritos por Grado Academico</h1>
     </div>
   </div>
 
@@ -103,7 +103,6 @@
               <th class="fw-bold">Grado</th>
               <th class="fw-bold">Rango</th>
               <th class="fw-bold">Alumno</th>
-              <th class="fw-bold">Total Sanciones</th>
               <th class="fw-bold">Deméritos Acumulados</th>
               <th class="fw-bold">Conducta</th>
             </tr>

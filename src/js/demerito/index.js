@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', function () {
             { data: 'gra_nombre' },
             { data: 'ran_nombre' },
             { data: 'alumno_nombre' },
-            { data: 'total_sanciones' },
             { data: 'demeritos_acumulados' },
             {
                 data: 'conducta',

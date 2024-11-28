@@ -15,6 +15,7 @@ class Alumno extends ActiveRecord
         'alu_segundo_apellido',
         'alu_grado_id',
         'alu_rango_id',
+        'alu_sexo',
         'alu_situacion'
     ];
 
@@ -26,6 +27,7 @@ class Alumno extends ActiveRecord
     public $alu_segundo_apellido;
     public $alu_grado_id;
     public $alu_rango_id;
+    public $alu_sexo;
     public $alu_situacion;
 
     // Constructor
@@ -39,6 +41,7 @@ class Alumno extends ActiveRecord
         $this->alu_segundo_apellido = $args['alu_segundo_apellido'] ?? null;
         $this->alu_grado_id = $args['alu_grado_id'] ?? null;
         $this->alu_rango_id = $args['alu_rango_id'] ?? null;
+        $this->alu_sexo = $args['alu_sexo'] ?? null;
         $this->alu_situacion = $args['alu_situacion'] ?? 1;
     }
 
@@ -70,6 +73,7 @@ class Alumno extends ActiveRecord
                     a.alu_segundo_nombre,
                     a.alu_primer_apellido,
                     a.alu_segundo_apellido,
+                    a.alu_sexo,
                     g.gra_nombre AS grado_nombre,
                     r.ran_nombre AS rango_nombre,
                     a.alu_primer_nombre || ' ' || a.alu_segundo_nombre || ' ' || 
