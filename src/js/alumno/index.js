@@ -76,9 +76,6 @@ const datatable = new DataTable('#tablaAlumno', {
                     <button class='btn btn-danger btn-sm eliminar' data-alu_id="${row.alu_id}">
                         <i class='bi bi-trash' title='ELIMINAR'></i>  
                     </button>
-                    <button class='btn btn-info btn-sm ver-sanciones' data-alu_id="${row.alu_id}">
-                        <i class='bi bi-file-earmark-pdf' title='VER SANCIONES'></i> 
-                    </button>
                 `;
             }
         }
@@ -305,35 +302,12 @@ btnCancelar.addEventListener('click', cancelar);
 
 
 
-// Función para manejar el clic en ver sanciones
-const verSanciones = async (e) => {
-    const botonSanciones = e.target.closest('.ver-sanciones');
-    if (!botonSanciones) return;
-
-    const id = botonSanciones.getAttribute('data-alu_id');
-    if (!id) {
-        Toast.fire({
-            icon: 'error',
-            title: 'Error: ID no encontrado'
-        });
-        return;
-    }
-
-
-    // Asegúrate que esta URL sea exactamente igual a tu estructura
-    const url = `/car_escuela/reporte/sancionesPDF?id=${id}`;
-    console.log('URL:', url); // Para debugging
-    window.open(url, '_blank');
-};
-
 // Agregar al event listener existente
 document.querySelector('#tablaAlumno').addEventListener('click', (e) => {
     if (e.target.closest('.modificar')) {
         traerDatos(e);
     } else if (e.target.closest('.eliminar')) {
         eliminar(e);
-    } else if (e.target.closest('.ver-sanciones')) {
-        verSanciones(e);
     }
 });
 

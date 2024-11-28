@@ -65,7 +65,18 @@
                                 </a></li>
                         </ul>
                     </li>
-
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle fw-bold" href="#" data-bs-toggle="dropdown">
+                            <i class="bi bi-people"></i> Alumnos
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <li>
+                                <a class="dropdown-item" href="/car_escuela/alugrado">
+                                    <i class="bi bi-list-ol"></i> Por Grados
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                     <!-- Demeritos Dropdown -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle fw-bold" href="#" data-bs-toggle="dropdown">
