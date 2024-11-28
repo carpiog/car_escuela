@@ -11,6 +11,9 @@ const btnModificar = document.getElementById('btnModificar');
 const btnCancelar = document.getElementById('btnCancelar');
 const selectFalta = document.getElementById('san_falta_id');
 const fechaSancion = document.getElementById('san_fecha_sancion');
+const startDate = document.getElementById('startDate');
+const endDate = document.getElementById('endDate');
+const btnAplicarFiltro = document.getElementById('btnAplicarFiltro');
 
 // Configurar fecha máxima como la actual
 fechaSancion.max = new Date().toISOString().split('T')[0];
@@ -21,7 +24,7 @@ const datatable = new DataTable('#tablaSancion', {
     language: lenguaje,
     pageLength: 15,
     lengthMenu: [3, 9, 11, 25, 100],
-    order: [], // Ordenar por fecha de sanción descendente
+    order: [],
     columns: [
         {
             title: 'No.',
@@ -65,8 +68,8 @@ const datatable = new DataTable('#tablaSancion', {
             data: 'san_demeritos',
             render: data => data || '-'
         },
-        { 
-            title: 'Ordeno', 
+        {
+            title: 'Ordeno',
             data: null,
             render: row => `${row.grado_arma} - ${row.nombres_apellidos}`
         },
@@ -77,23 +80,23 @@ const datatable = new DataTable('#tablaSancion', {
             searchable: false,
             width: '15%',
             render: (data, type, row) => `
-            <div class="btn-group btn-group-sm" role="group">
-                <button class='btn btn-warning btn-sm modificar' 
-                    data-id="${row.san_id}"
-                    data-san_catalogo="${row.san_catalogo}"
-                    data-san_fecha_sancion="${row.san_fecha_sancion}"
-                    data-san_falta_id="${row.san_falta_id}"
-                    data-san_instructor_ordena="${row.san_instructor_ordena}"
-                    data-san_horas_arresto="${row.san_horas_arresto || ''}"
-                    data-san_demeritos="${row.san_demeritos || ''}"
-                    data-san_observaciones="${row.san_observaciones || ''}">
-                    <i class='bi bi-pencil-square' title='MODIFICAR'></i>
-                </button>
-                <button class='btn btn-danger btn-sm eliminar' data-id="${row.san_id}">
-                    <i class='bi bi-trash' title='ELIMINAR'></i>
-                </button>
-            </div>
-        `
+                <div class="btn-group btn-group-sm" role="group">
+                    <button class='btn btn-warning btn-sm modificar'
+                        data-id="${row.san_id}"
+                        data-san_catalogo="${row.san_catalogo}"
+                        data-san_fecha_sancion="${row.san_fecha_sancion}"
+                        data-san_falta_id="${row.san_falta_id}"
+                        data-san_instructor_ordena="${row.san_instructor_ordena}"
+                        data-san_horas_arresto="${row.san_horas_arresto || ''}"
+                        data-san_demeritos="${row.san_demeritos || ''}"
+                        data-san_observaciones="${row.san_observaciones || ''}">
+                        <i class='bi bi-pencil-square' title='MODIFICAR'></i>
+                    </button>
+                    <button class='btn btn-danger btn-sm eliminar' data-id="${row.san_id}">
+                        <i class='bi bi-trash' title='ELIMINAR'></i>
+                    </button>
+                </div>
+            `
         }
     ]
 });
@@ -113,8 +116,38 @@ const actualizarSancion = () => {
 
     formulario.san_horas_arresto.value = horas || '';
     formulario.san_demeritos.value = demeritos || '';
+};
 
-    console.log('Valores actualizados:', { horas, demeritos });
+// Función para buscar sanciones
+const buscar = async () => {
+    try {
+        let url = "/car_escuela/API/sancion/buscar";
+        
+        // Agregar parámetros de filtro si existen
+        if (startDate.value && endDate.value) {
+            const params = new URLSearchParams({
+                startDate: startDate.value,
+                endDate: endDate.value
+            });
+            url += `?${params.toString()}`;
+        }
+
+        const respuesta = await fetch(url);
+        const data = await respuesta.json();
+
+        datatable.clear();
+        if (data.datos && Array.isArray(data.datos)) {
+            datatable.rows.add(data.datos).draw();
+        } else {
+            console.log('No hay datos o no es un array');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        Toast.fire({
+            icon: 'error',
+            title: 'Error al cargar los datos'
+        });
+    }
 };
 
 // Función para guardar sanción
@@ -152,39 +185,13 @@ const guardar = async (e) => {
     }
 };
 
-const buscar = async () => {
-    try {
-        const url = "/car_escuela/API/sancion/buscar";
-        const respuesta = await fetch(url);
-        const data = await respuesta.json();
-
-        console.log('Respuesta completa:', data);
-        console.log('Datos recibidos:', data.datos);
-
-        datatable.clear();
-        if (data.datos && Array.isArray(data.datos)) {
-            console.log('Número de registros:', data.datos.length);
-            datatable.rows.add(data.datos).draw();
-        } else {
-            console.log('No hay datos o no es un array');
-        }
-    } catch (error) {
-        console.error('Error completo:', error);
-        Toast.fire({
-            icon: 'error',
-            title: 'Error al cargar los datos'
-        });
-    }
-};
-
+// Función para traer datos al formulario
 const traerDatos = (e) => {
     const botonModificar = e.target.closest('.modificar');
     if (!botonModificar) return;
 
     const dataset = botonModificar.dataset;
-    console.log('Datos del dataset:', dataset); // Para debug
 
-    // Asignar valores a los campos del formulario
     formulario.san_id.value = dataset.id;
     formulario.san_catalogo.value = dataset.san_catalogo;
     formulario.san_fecha_sancion.value = dataset.san_fecha_sancion;
@@ -194,7 +201,6 @@ const traerDatos = (e) => {
     formulario.san_demeritos.value = dataset.san_demeritos || '';
     formulario.san_observaciones.value = dataset.san_observaciones || '';
 
-    // Cambiar visibilidad de elementos
     document.querySelector('#tablaSancion').closest('.row').style.display = 'none';
     btnGuardar.parentElement.style.display = 'none';
     btnGuardar.disabled = true;
@@ -206,21 +212,15 @@ const traerDatos = (e) => {
 
 // Función para cancelar modificación
 const cancelar = () => {
-    // Resetear el formulario
     formulario.reset();
-    
-    // Restaurar visibilidad de botones
     btnGuardar.parentElement.style.display = '';
     btnGuardar.disabled = false;
     btnModificar.parentElement.style.display = 'none';
     btnModificar.disabled = true;
     btnCancelar.parentElement.style.display = 'none';
     btnCancelar.disabled = true;
-    
-    // Restaurar visibilidad de la tabla
     document.querySelector('#tablaSancion').closest('.row').style.display = '';
     
-    // Limpiar cualquier mensaje de error o estado previo si existe
     if (document.querySelector('.alert')) {
         document.querySelector('.alert').remove();
     }
@@ -306,6 +306,26 @@ const eliminar = async (id) => {
 };
 
 // Event Listeners
+btnAplicarFiltro.addEventListener('click', () => {
+    if (!startDate.value || !endDate.value) {
+        Toast.fire({
+            icon: 'warning',
+            title: 'Por favor seleccione ambas fechas'
+        });
+        return;
+    }
+    
+    if (startDate.value > endDate.value) {
+        Toast.fire({
+            icon: 'warning',
+            title: 'La fecha inicial no puede ser mayor que la fecha final'
+        });
+        return;
+    }
+    
+    buscar();
+});
+
 formulario.addEventListener('submit', guardar);
 btnModificar.addEventListener('click', modificar);
 btnCancelar.addEventListener('click', cancelar);
@@ -313,11 +333,16 @@ selectFalta.addEventListener('change', actualizarSancion);
 
 document.querySelector('#tablaSancion').addEventListener('click', (e) => {
     if (e.target.closest('.modificar')) {
-        traerDatos(e); // Pasar el evento e a la función
+        traerDatos(e);
     } else if (e.target.closest('.eliminar')) {
         const id = e.target.closest('.eliminar').dataset.id;
         eliminar(id);
     }
 });
-// Iniciar búsqueda al cargar
-buscar();
+
+// Limpiar filtros al cargar la página
+window.addEventListener('load', () => {
+    startDate.value = '';
+    endDate.value = '';
+    buscar();
+});

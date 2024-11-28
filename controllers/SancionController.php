@@ -100,7 +100,12 @@ class SancionController {
                 return;
             }
     
-            $sanciones = Sancion::obtenerSanciones();
+            if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
+                $sanciones = Sancion::obtenerSancionesPorPeriodo($_GET['startDate'], $_GET['endDate']);
+            } else {
+                $sanciones = Sancion::obtenerSanciones();
+            }
+    
             echo json_encode([
                 'codigo' => 1,
                 'mensaje' => 'Datos encontrados',
@@ -112,7 +117,7 @@ class SancionController {
                 'mensaje' => 'Error al buscar sanciones: ' . $e->getMessage()
             ]);
         }
-    }    
+    }
 
     public static function modificarAPI() {
         header('Content-Type: application/json');

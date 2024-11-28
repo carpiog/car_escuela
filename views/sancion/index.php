@@ -74,6 +74,7 @@
                             <label for="san_observaciones" class="form-label">Observaciones</label>
                             <textarea class="form-control" name="san_observaciones" id="san_observaciones" rows="3"></textarea>
                         </div>
+
                         <div class="row g-3 text-center d-flex justify-content-center mb-3">
                             <div class="col-md-4" id="divGuardar">
                                 <button type="submit" id="btnGuardar" class="btn btn-primary w-100">
@@ -100,6 +101,31 @@
     </div>
 
     <h2 class="text-center">Lista de Arrestos</h2>
+
+    <div class="row justify-content-center mb-3">
+        <div class="col-lg-10">
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="row align-items-end">
+                        <div class="col-md-4">
+                            <label for="startDate" class="form-label">Fecha Inicial</label>
+                            <input type="date" class="form-control" id="startDate">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="endDate" class="form-label">Fecha Final</label>
+                            <input type="date" class="form-control" id="endDate">
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-primary w-100" id="btnAplicarFiltro">
+                                <i class="bi bi-filter"></i> Buscar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row mb-4">
         <div class="col-12">
             <div class="card shadow">
