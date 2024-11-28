@@ -57,7 +57,7 @@ const datatable = new DataTable('#tablaAlumno', {
             orderable: false,
             render: (data, type, row) => {
                 return `
-                    <button class='btn btn-warning btn-sm modificar' 
+                    <button class='btn btn-warning btn-sm modificar' title='MODIFICAR' 
                         data-alu_id="${row.alu_id}"
                         data-alu_catalogo="${row.alu_catalogo}"
                         data-alu_grado_id="${row.alu_grado_id}"
@@ -66,13 +66,13 @@ const datatable = new DataTable('#tablaAlumno', {
                         data-alu_segundo_nombre="${row.alu_segundo_nombre || ''}"
                         data-alu_primer_apellido="${row.alu_primer_apellido}"
                         data-alu_segundo_apellido="${row.alu_segundo_apellido || ''}">
-                        <i class='bi bi-pencil-square'></i> Modificar
+                        <i class='bi bi-pencil-square'></i>
                     </button>
                     <button class='btn btn-danger btn-sm eliminar' data-alu_id="${row.alu_id}">
-                        <i class='bi bi-trash'></i> Eliminar
+                        <i class='bi bi-trash' title='ELIMINAR'></i>  
                     </button>
                     <button class='btn btn-info btn-sm ver-sanciones' data-alu_id="${row.alu_id}">
-                        <i class='bi bi-file-earmark-pdf'></i> Ver Sanciones
+                        <i class='bi bi-file-earmark-pdf' title='VER SANCIONES'></i> 
                     </button>
                 `;
             }

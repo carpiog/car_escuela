@@ -87,10 +87,10 @@ const datatable = new DataTable('#tablaSancion', {
                     data-san_horas_arresto="${row.san_horas_arresto || ''}"
                     data-san_demeritos="${row.san_demeritos || ''}"
                     data-san_observaciones="${row.san_observaciones || ''}">
-                    <i class='bi bi-pencil-square'></i>
+                    <i class='bi bi-pencil-square' title='MODIFICAR'></i>
                 </button>
                 <button class='btn btn-danger btn-sm eliminar' data-id="${row.san_id}">
-                    <i class='bi bi-trash'></i>
+                    <i class='bi bi-trash' title='ELIMINAR'></i>
                 </button>
             </div>
         `

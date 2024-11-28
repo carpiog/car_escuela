@@ -14,87 +14,77 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler">
+            <a class="navbar-brand" href="/car_escuela/">
+                <img src="<?= asset('./images/CCEG.png') ?>" width="35" alt="logo">
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand" href="/car_escuela/">
-                <img src="<?= asset('./images/CCEG.png') ?>" width="35px" alt="cit">
-            </a>
-            <div class="collapse navbar-collapse" id="navbarToggler">
+
+            <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                            <i class="bi bi-gear me-2"></i>REGISTROS
+                    <!-- Registros Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle fw-bold" href="#" data-bs-toggle="dropdown">
+                            <i class="bi bi-journal-plus"></i> Registros
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            <li>
-                                <a class="dropdown-item" href="/car_escuela/instructor">
-                                    <i class="bi bi-person-plus me-2"></i>Registrar Instructores
-                                </a>
-                                <a class="dropdown-item" href="/car_escuela/alumno">
-                                    <i class="bi bi-person-plus me-2"></i>Registrar Alumnos
-                                </a>
-                                <a class="dropdown-item" href="/car_escuela/sancion">
-                                    <i class="bi bi-person-plus me-2"></i>Registrar Arresto
-                                </a>
-                            </li>
+                            <li><a class="dropdown-item" href="/car_escuela/instructor">
+                                    <i class="bi bi-person-badge"></i> Instructores
+                                </a></li>
+                            <li><a class="dropdown-item" href="/car_escuela/alumno">
+                                    <i class="bi bi-mortarboard"></i> Alumnos
+                                </a></li>
+                            <li><a class="dropdown-item" href="/car_escuela/sancion">
+                                    <i class="bi bi-exclamation-octagon"></i> Arresto
+                                </a></li>
                         </ul>
-                    </div>
-                    <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                            <i class="bi bi-exclamation-triangle me-2"></i>TIPOS DE FALTA
+                    </li>
+
+                    <!-- Faltas Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle fw-bold" href="#" data-bs-toggle="dropdown">
+                            <i class="bi bi-shield-exclamation"></i> Tipos de Falta
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            <li>
-                                <a class="dropdown-item" href="/car_escuela/falta?tipo=LEVE">
-                                    <i class="bi bi-info-circle me-2"></i>Faltas Leves
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="/car_escuela/falta?tipo=GRAVE">
-                                    <i class="bi bi-exclamation-circle me-2"></i>Faltas Graves
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="/car_escuela/falta?tipo=GRAVISIMAS">
-                                    <i class="bi bi-exclamation-diamond me-2"></i>Faltas Gravísimas
-                                </a>
-                            </li>
+                            <li><a class="dropdown-item" href="/car_escuela/falta?tipo=LEVE">
+                                    <i class="bi bi-exclamation"></i> Leves
+                                </a></li>
+                            <li><a class="dropdown-item" href="/car_escuela/falta?tipo=GRAVE">
+                                    <i class="bi bi-exclamation-circle"></i> Graves
+                                </a></li>
+                            <li><a class="dropdown-item" href="/car_escuela/falta?tipo=GRAVISIMAS">
+                                    <i class="bi bi-exclamation-triangle"></i> Gravísimas
+                                </a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li>
-                                <a class="dropdown-item" href="/car_escuela/falta">
-                                    <i class="bi bi-card-list me-2"></i>Todas las Faltas
-                                </a>
-                            </li>
+                            <li><a class="dropdown-item" href="/car_escuela/falta">
+                                    <i class="bi bi-list-check"></i> Todas las Faltas
+                                </a></li>
                         </ul>
-                    </div>
+                    </li>
 
-                    <!-- Nuevo Dropdown para "DEMERITOS" -->
-                    <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                            <i class="bi bi-trophy me-2"></i>DEMERITOS
+                    <!-- Demeritos Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle fw-bold" href="#" data-bs-toggle="dropdown">
+                            <i class="bi bi-award"></i> Deméritos
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            <li>
-                                <a class="dropdown-item" href="/car_escuela/demerito">
-                                    <i class="bi bi-list me-2"></i>Ver Demeritos
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="/car_escuela/estadisticas">
-                                    <i class="bi bi-bar-chart me-2"></i>Estadísticas
-                                </a>
-                            </li>
+                            <li><a class="dropdown-item" href="/car_escuela/demerito">
+                                    <i class="bi bi-list-stars"></i> Ver Deméritos
+                                </a></li>
+                            <li><a class="dropdown-item" href="/car_escuela/estadisticas">
+                                    <i class="bi bi-graph-up"></i> Estadísticas
+                                </a></li>
                         </ul>
-                    </div>
+                    </li>
                 </ul>
-                <div class="col-lg-1 d-grid mb-lg-0 mb-2">
-                    <a href="/menu/" class="btn btn-danger">
-                        <i class="bi bi-arrow-bar-left"></i> MENÚ
-                    </a>
-                </div>
+
+                <a href="/menu/" class="btn btn-danger">
+                    <i class="bi bi-box-arrow-left"></i> Menú
+                </a>
             </div>
         </div>
     </nav>

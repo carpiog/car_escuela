@@ -47,10 +47,10 @@ const datatable = new DataTable('#tablaInstructor', {
             render: (data, type, row) => `
                 <button class='btn btn-warning btn-sm modificar' data-id="${data}" 
                     data-catalogo="${row.ins_catalogo}">
-                    <i class='bi bi-pencil-square'></i> Modificar
+                    <i class='bi bi-pencil-square' title='MODIFICAR'></i>
                 </button>
                 <button class='btn btn-danger btn-sm eliminar ms-2' data-id="${data}">
-                    <i class='bi bi-trash'></i> Eliminar
+                    <i class='bi bi-trash' title='ELIMINAR'></i>
                 </button>
             `
         }
