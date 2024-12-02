@@ -69,6 +69,8 @@ CREATE TABLE car_sancion (
     san_demeritos INTEGER, -- Para cuando son deméritos
     san_observaciones VARCHAR(200),
     san_situacion INTEGER DEFAULT 1,
+    san_horas_cumplidas NUMERIC(10, 2) DEFAULT 0,
+    san_estado CHAR(1) DEFAULT 'P',  -- Valor predeterminado 'P' (Pendiente)
     FOREIGN KEY (san_catalogo) REFERENCES car_alumno(alu_id),
     FOREIGN KEY (san_falta_id) REFERENCES car_falta(fal_id),
     FOREIGN KEY (san_instructor_ordena) REFERENCES car_instructor(ins_id)
@@ -79,10 +81,8 @@ CREATE TABLE car_cumplimiento_arresto (
     cum_sancion_id INTEGER NOT NULL REFERENCES car_sancion(san_id),
     cum_fecha DATE NOT NULL,
     cum_estado CHAR(1) NOT NULL DEFAULT 'P', -- P: Pendiente, C: Cumplio, T: Traslado, F: Falto
-    cum_horas_cumplidas INTEGER DEFAULT 0,    -- Este es el correcto
+    cum_horas_cumplidas INTEGER DEFAULT 0,   
     cum_horas_pendientes INTEGER DEFAULT 0,
-    cum_fin_semana_inicio DATE, -- Fecha del sábado que inicia a cumplir
-    cum_fin_semana_siguiente DATE, -- En caso de pasar a siguiente fin de semana
     cum_instructor_supervisa INTEGER NOT NULL REFERENCES car_instructor(ins_id),
     cum_observaciones TEXT,
     cum_situacion SMALLINT DEFAULT 1

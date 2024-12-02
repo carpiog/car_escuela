@@ -14,7 +14,9 @@ class Sancion extends ActiveRecord {
         'san_horas_arresto',
         'san_demeritos',
         'san_observaciones',
-        'san_situacion'
+        'san_situacion',
+        'san_estado',
+        'san_horas_cumplidas'
     ];
 
     public $san_id;
@@ -26,6 +28,8 @@ class Sancion extends ActiveRecord {
     public $san_demeritos;
     public $san_observaciones;
     public $san_situacion;
+    public $san_estado;
+    public $san_horas_cumplidas;
 
     public function __construct($args = []) {
         $this->san_id = $args['san_id'] ?? null;
@@ -37,6 +41,8 @@ class Sancion extends ActiveRecord {
         $this->san_demeritos = $args['san_demeritos'] ?? null;
         $this->san_observaciones = $args['san_observaciones'] ?? '';
         $this->san_situacion = $args['san_situacion'] ?? 1;
+        $this->san_estado = $args['san_estado'] ?? 'P'; // 'P' es el valor predeterminado
+        $this->san_horas_cumplidas = $args['san_horas_cumplidas'] ?? 0; // 0 es el valor predeterminado
     }
 
     // Obtener una sanción específica con toda su información relacionada

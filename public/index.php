@@ -4,7 +4,7 @@ require_once __DIR__ . '/../includes/app.php';
 use Controllers\AlumnoController;
 use MVC\Router;
 use Controllers\AppController;
-use Controllers\CumplimientoArrestoController;
+use Controllers\ArrestoController;
 use Controllers\DemeritoController;
 use Controllers\EstadisticaController;
 use Controllers\FaltaController;
@@ -61,12 +61,10 @@ $router->get('/API/estadisticas/grados', [EstadisticaController::class, 'gradosA
 $router->get('/API/estadisticas/faltas', [EstadisticaController::class, 'faltasAPI']);
 $router->get('/API/estadisticas/todas', [EstadisticaController::class, 'todasAPI']);
 
-// RUTAS PARA CUMPLIMIENTO DE ARRESTOS
-$router->get('/cumplimiento', [CumplimientoArrestoController::class, 'index']);
-$router->get('/API/cumplimiento/tipos', [CumplimientoArrestoController::class, 'tiposAPI']);
-$router->get('/API/cumplimiento/grados', [CumplimientoArrestoController::class, 'gradosAPI']);
-$router->get('/API/cumplimiento/faltas', [CumplimientoArrestoController::class, 'faltasAPI']);
-$router->get('/API/cumplimiento/todas', [CumplimientoArrestoController::class, 'todasAPI']);
+// RUTAS PARA CONTROL DE ARRESTOS
+$router->get('/arresto', [ArrestoController::class, 'index']);
+$router->get('/API/arresto/listar', [ArrestoController::class, 'listarAPI']); 
+$router->post('/API/arresto/actualizar', [ArrestoController::class, 'actualizarAPI']);
 
 
 // Comprueba y valida las rutas, que existan y les asigna las funciones del Controlador
