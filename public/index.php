@@ -65,6 +65,7 @@ $router->get('/API/estadisticas/todas', [EstadisticaController::class, 'todasAPI
 $router->get('/arresto', [ArrestoController::class, 'index']);
 $router->get('/API/arresto/listar', [ArrestoController::class, 'listarAPI']); 
 $router->post('/API/arresto/actualizar', [ArrestoController::class, 'actualizarAPI']);
+$router->get('/arresto/nomina-pdf', [ArrestoController::class, 'nominaPDF']);
 
 
 // Comprueba y valida las rutas, que existan y les asigna las funciones del Controlador

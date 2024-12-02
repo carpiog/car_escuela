@@ -1,7 +1,7 @@
 {
-    "name": "demo-app",
+    "name": "car_escuela",
     "version": "1.0.0",
-    "description": "Aplicacion MVC demo",
+    "description": "Control de Arresto de la Escuela Regional de Comunicaciones",
     "main": "index.js",
     "scripts": {
         "build": "webpack",

@@ -116,5 +116,10 @@ document.querySelector('#tablaArresto').addEventListener('click', e => {
 
 document.getElementById('btnGuardarHoras').addEventListener('click', guardarHoras);
 
+// Agregar el evento para el botón de generar nómina
+document.getElementById('btnGenerarNomina').addEventListener('click', () => {
+    window.open('/car_escuela/arresto/nomina-pdf', '_blank');
+});
+
 // Cargar datos al iniciar
 cargarDatos();

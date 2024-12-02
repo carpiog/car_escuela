@@ -83,12 +83,21 @@
                             <i class="bi bi-award"></i> Estadisticas
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="/car_escuela/demerito">
-                                    <i class="bi bi-list-stars"></i>Demeritos por grado
-                                </a></li>
-                            <li><a class="dropdown-item" href="/car_escuela/estadisticas">
-                                    <i class="bi bi-graph-up"></i>Generales
-                                </a></li>
+                            <li>
+                                <a class="dropdown-item" href="/car_escuela/demerito">
+                                    <i class="bi bi-list-stars"></i> Demeritos por grado
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/car_escuela/arresto">
+                                    <i class="bi bi-clock-history"></i> Control de Arrestos
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/car_escuela/estadisticas">
+                                    <i class="bi bi-graph-up"></i> Generales
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 </ul>

@@ -4,6 +4,7 @@ namespace Controllers;
 use Exception;
 use Model\ActiveRecord;
 use MVC\Router;
+use Mpdf\Mpdf;
 
 class ArrestoController {
     public static function index(Router $router) {
@@ -107,6 +108,80 @@ class ArrestoController {
             echo json_encode([
                 'codigo' => 0,
                 'mensaje' => 'Error al actualizar: ' . $e->getMessage()
+            ]);
+        }
+    }
+    public static function nominaPDF(Router $router) {
+        try {
+            // Configuración de MPDF
+            $mpdf = new Mpdf([
+                "default_font_size" => "12",
+                "default_font" => "arial",
+                "orientation" => "L",  // Landscape para más espacio
+                "margin_top" => "30",
+                "format" => "Letter"
+            ]);
+    
+            // Obtener datos de arrestos pendientes
+            $query = "SELECT 
+                a.alu_catalogo,
+                g.gra_nombre,
+                r.ran_nombre,
+                TRIM(a.alu_primer_nombre || ' ' || 
+                     NVL(a.alu_segundo_nombre, '') || ' ' ||
+                     a.alu_primer_apellido || ' ' || 
+                     NVL(a.alu_segundo_apellido, '')) AS alumno_nombre,
+                SUM(NVL(s.san_horas_arresto, 0)) AS total_horas_arresto,
+                SUM(NVL(s.san_horas_cumplidas, 0)) AS horas_cumplidas,
+                SUM(NVL(s.san_horas_arresto, 0)) - SUM(NVL(s.san_horas_cumplidas, 0)) AS horas_pendientes,
+                MIN(s.san_fecha_sancion) as primera_sancion,
+                COUNT(s.san_id) as total_sanciones
+            FROM car_alumno a
+            LEFT JOIN car_sancion s ON a.alu_id = s.san_catalogo AND s.san_situacion = 1
+            JOIN car_grado_academico g ON a.alu_grado_id = g.gra_id
+            JOIN car_rango r ON a.alu_rango_id = r.ran_id
+            WHERE a.alu_situacion = 1
+            GROUP BY 
+                a.alu_catalogo, g.gra_nombre, g.gra_orden, r.ran_nombre, 
+                a.alu_primer_nombre, a.alu_segundo_nombre, 
+                a.alu_primer_apellido, a.alu_segundo_apellido
+            HAVING SUM(NVL(s.san_horas_arresto, 0)) > SUM(NVL(s.san_horas_cumplidas, 0))
+            ORDER BY g.gra_orden DESC";
+    
+            $arrestos = ActiveRecord::fetchArray($query);
+    
+            // Cargar plantillas
+            $header = $router->load('pdf/header');
+            $footer = $router->load('pdf/footer');
+    
+            // Configurar header y footer
+            $mpdf->SetHTMLHeader($header);
+            $mpdf->SetHTMLFooter($footer);
+    
+            // Cargar estilos CSS
+            $css = file_get_contents(__DIR__ . '/../views/pdf/styles.css');
+            $mpdf->WriteHTML($css, 1);
+    
+            // Cargar y renderizar la plantilla del reporte
+            $html = $router->load('pdf/arresto', [
+                'arrestos' => $arrestos,
+                'fecha' => date('Y-m-d')
+            ]);
+    
+            // Escribir contenido
+            $mpdf->WriteHTML($html, 2);
+    
+            // Configurar numeración de páginas
+            $mpdf->AliasNbPages();
+    
+            // Generar y mostrar el PDF
+            $mpdf->Output("Nomina_Arrestos.pdf", "I");
+    
+        } catch (Exception $e) {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'codigo' => 0,
+                'mensaje' => 'Error al generar el PDF: ' . $e->getMessage()
             ]);
         }
     }

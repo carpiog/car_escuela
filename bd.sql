@@ -76,21 +76,6 @@ CREATE TABLE car_sancion (
     FOREIGN KEY (san_instructor_ordena) REFERENCES car_instructor(ins_id)
 );
 
-CREATE TABLE car_cumplimiento_arresto (
-    cum_id SERIAL PRIMARY KEY,
-    cum_sancion_id INTEGER NOT NULL REFERENCES car_sancion(san_id),
-    cum_fecha DATE NOT NULL,
-    cum_estado CHAR(1) NOT NULL DEFAULT 'P', -- P: Pendiente, C: Cumplio, T: Traslado, F: Falto
-    cum_horas_cumplidas INTEGER DEFAULT 0,   
-    cum_horas_pendientes INTEGER DEFAULT 0,
-    cum_instructor_supervisa INTEGER NOT NULL REFERENCES car_instructor(ins_id),
-    cum_observaciones TEXT,
-    cum_situacion SMALLINT DEFAULT 1
-);
-
-
-
-
 iNSERT INTO car_tipo_falta (tip_nombre, tip_descripcion) 
 VALUES ('LEVE', 'Quebrantamiento de una norma que lesiona la disciplina');
 INSERT INTO car_tipo_falta (tip_nombre, tip_descripcion) 

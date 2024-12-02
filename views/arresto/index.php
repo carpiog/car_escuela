@@ -14,6 +14,10 @@
                <h5 class="mb-0 fw-bold">Listado de Arrestos</h5>
            </div>
        </div>
+       <button type="button" id="btnGenerarNomina" class="btn btn-primary">
+            <i class="bi bi-file-earmark-pdf-fill me-2"></i>
+            Generar Nómina de Arresto
+        </button>
        <div class="card-body">
            <div class="table-responsive">
                <table class="table table-hover table-striped align-middle" id="tablaArresto">
@@ -37,7 +41,6 @@
    </div>
 </div>
 
-// Añadir este HTML al final de index.php
 <div class="modal fade" id="modalHoras" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
