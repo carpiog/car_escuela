@@ -41,7 +41,48 @@
                                 </a></li>
                         </ul>
                     </li>
-
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle fw-bold" href="#" data-bs-toggle="dropdown">
+                            <i class="bi bi-people"></i> Alumnos
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <li>
+                                <a class="dropdown-item" href="/car_escuela/alugrado">
+                                    <i class="bi bi-list-ol"></i> Por Grados
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle fw-bold" href="#" data-bs-toggle="dropdown">
+                            <i class="bi bi-clock-history"></i>Arresto
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <li>
+                                <a class="dropdown-item" href="/car_escuela/arresto">
+                                    <i class="bi bi-list-stars"></i> Nomina
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle fw-bold" href="#" data-bs-toggle="dropdown">
+                            <i class="bi bi-award"></i> Estadisticas
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <li>
+                                <a class="dropdown-item" href="/car_escuela/demerito">
+                                    <i class="bi bi-list-stars"></i> Demeritos por grado
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/car_escuela/estadisticas">
+                                    <i class="bi bi-graph-up"></i> Generales
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    
                     <!-- Faltas Dropdown -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle fw-bold" href="#" data-bs-toggle="dropdown">
@@ -65,46 +106,7 @@
                                 </a></li>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle fw-bold" href="#" data-bs-toggle="dropdown">
-                            <i class="bi bi-people"></i> Alumnos
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-dark">
-                            <li>
-                                <a class="dropdown-item" href="/car_escuela/alugrado">
-                                    <i class="bi bi-list-ol"></i> Por Grados
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <!-- Demeritos Dropdown -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle fw-bold" href="#" data-bs-toggle="dropdown">
-                            <i class="bi bi-award"></i> Estadisticas
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-dark">
-                            <li>
-                                <a class="dropdown-item" href="/car_escuela/demerito">
-                                    <i class="bi bi-list-stars"></i> Demeritos por grado
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="/car_escuela/arresto">
-                                    <i class="bi bi-clock-history"></i> Control de Arrestos
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="/car_escuela/estadisticas">
-                                    <i class="bi bi-graph-up"></i> Generales
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
                 </ul>
-
-                <a href="/menu/" class="btn btn-danger">
-                    <i class="bi bi-box-arrow-left"></i> Menú
-                </a>
             </div>
         </div>
     </nav>
