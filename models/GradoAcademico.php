@@ -9,4 +9,12 @@ class GradoAcademico extends ActiveRecord {
     public $gra_id;
     public $gra_nombre;
     public $gra_orden;
+
+
+public static function obtenerGrado() {
+    $query = "SELECT * FROM car_grado_academico where gra_situacion = 1";
+    return static::fetchArray($query);  // Usamos fetchArray que ya maneja el sanitizado
 }
+
+}
+

@@ -346,3 +346,58 @@ window.addEventListener('load', () => {
     endDate.value = '';
     buscar();
 });
+
+const selectGrados = document.getElementById('filtroGrado');
+const selectAlumnos = document.getElementById('san_catalogo');
+
+const buscarPorGrados = async (gradoId = '') => {
+    try {
+        const url = `/car_escuela/API/alumno/buscar${gradoId ? `?grado=${gradoId}` : ''}`;
+        const respuesta = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'fetch'
+            }
+        });
+
+        if (!respuesta.ok) {
+            throw new Error('Error en la respuesta del servidor');
+        }
+
+        const { codigo, datos } = await respuesta.json();
+
+        if (codigo === 1 && Array.isArray(datos)) {
+            selectAlumnos.disabled = false;
+            selectAlumnos.innerHTML = '<option value="">Seleccione un alumno</option>';
+            
+            datos.forEach(alumno => {
+                const option = document.createElement('option');
+                option.value = alumno.alu_id;
+                option.textContent = `${alumno.rango_nombre} - ${alumno.nombres_completos}`;
+                selectAlumnos.appendChild(option);
+            });
+        } else {
+            selectAlumnos.disabled = true;
+            selectAlumnos.innerHTML = '<option value="">No hay alumnos disponibles</option>';
+            console.error('No se recibieron datos válidos');
+        }
+    } catch (error) {
+        console.error('Error al buscar alumnos:', error);
+        Toast.fire({
+            icon: 'error',
+            title: 'Error al cargar los datos'
+        });
+        selectAlumnos.disabled = true;
+        selectAlumnos.innerHTML = '<option value="">Error al cargar alumnos</option>';
+    }
+};
+
+// Evento para el filtro de grados
+selectGrados.addEventListener('change', function() {
+    const gradoId = this.value;
+    buscarPorGrados(gradoId);
+});
+
+// Carga inicial de alumnos
+buscarPorGrados();

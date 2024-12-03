@@ -6,6 +6,7 @@ use Exception;
 use Model\Sancion;
 use Model\Alumno;
 use Model\Falta;
+use Model\GradoAcademico;
 use Model\Instructor;
 use MVC\Router;
 
@@ -16,6 +17,9 @@ class SancionController {
             $alumnos = Alumno::obtenerAlumnos(); // Usando el método que incluye nombres completos
             $faltas = Falta::buscarTodos(); // Usando el método que incluye categorías
             $instructores = Instructor::obtenerInstructorconQuery(); // Usando el método que incluye nombres completos
+            $grados = GradoAcademico::obtenerGrado();
+
+            
 
             if (!$alumnos || !$faltas || !$instructores) {
                 throw new Exception("Error al obtener los datos necesarios");
@@ -24,7 +28,8 @@ class SancionController {
             $router->render('sancion/index', [
                 'alumnos' => $alumnos,
                 'faltas' => $faltas,
-                'instructores' => $instructores
+                'instructores' => $instructores,
+                'grados' => $grados
             ]);
         } catch (Exception $e) {
             echo json_encode([
