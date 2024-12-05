@@ -116,7 +116,7 @@
                             <i class="bi bi-info-circle"></i> Ayuda
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="#">
+                            <li><a class="dropdown-item" href="/car_escuela/manual">
                                     <i class="bi bi-book"></i> Manual de Usuario
                                 </a></li>
                         </ul>

@@ -1,7 +1,7 @@
 <div class="container-fluid py-4">
     <div class="row mb-4">
         <div class="col-12 text-center">
-            <h1 class="display-5 fw-bold text-primary">Conductas Generales</h1>
+            <h1 class="display-5 fw-bold text-primary">Conductas Generales y por Grados</h1>
             <h4 class="text-muted">REGISTRO DE CONDUCTAS Y DEMÉRITOS</h4>
         </div>
     </div>

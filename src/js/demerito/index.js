@@ -57,21 +57,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const aplicarFiltros = () => {
         const filtroGrado = document.getElementById('filtroGrado').value;
-        let filtroConducta = document.getElementById('filtroConducta').value;
 
         // Filtro de grado (columna 2)
         dataTable.column(2).search(filtroGrado ? filtroGrado : '', true, false);
-
-        // Filtro de conducta (columna 7)
-        if (filtroConducta === 'RIESGO') {
-            dataTable.column(7).search('DEFICIENTE|MALA', true, false);
-        } else if (filtroConducta) {
-            filtroConducta = filtroConducta.toUpperCase();
-            dataTable.column(7).search(filtroConducta, true, false);
-        } else {
-            dataTable.column(7).search('');
-        }
-
         dataTable.draw();
     };
 
@@ -93,7 +81,6 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     document.getElementById('filtroGrado').addEventListener('change', aplicarFiltros);
-    document.getElementById('filtroConducta').addEventListener('change', aplicarFiltros);
 
     buscar();
 });

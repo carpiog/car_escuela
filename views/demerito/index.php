@@ -22,25 +22,6 @@
         </div>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="card shadow-sm border-0">
-        <div class="card-body">
-          <label class="form-label fw-bold small">
-            <i class="bi bi-star me-1"></i>Conducta
-          </label>
-          <select class="form-select form-select-lg" id="filtroConducta">
-            <option value="">Todas las conductas</option>
-            <option value="EXCELENTE">Excelente</option>
-            <option value="MUY BUENA">Muy Buena</option>
-            <option value="BUENA">Buena</option>
-            <option value="REGULAR">Regular</option>
-            <option value="DEFICIENTE">Deficiente</option>
-            <option value="MALA">Mala</option>
-            <option value="RIESGO">En riesgo (Deficiente/Mala)</option>
-          </select>
-        </div>
-      </div>
-    </div>
   </div>
 
   <!-- Statistics Cards -->
