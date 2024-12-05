@@ -48,6 +48,7 @@ $router->get('/sancion', [SancionController::class, 'index']);
 $router->post('/API/sancion/guardar', [SancionController::class, 'guardarAPI']);
 $router->get('/API/sancion/buscar', [SancionController::class, 'buscarAPI']);
 $router->post('/API/sancion/eliminar', [SancionController::class, 'eliminarAPI']);
+$router->post('/API/sancion/modificar', [SancionController::class, 'modificarAPI']);
 
 //VISTAS PARA VER DEMERITOS ACUMULADOS, ASI TAMBIEN LA CONDUCTA
 $router->get('/demerito', [DemeritoController::class, 'index']);

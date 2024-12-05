@@ -4,7 +4,6 @@ import Swal from "sweetalert2";
 import DataTable from "datatables.net-bs5";
 import { lenguaje } from "../lenguaje";
 
-// Elementos del DOM
 const formulario = document.getElementById('formSancion');
 const btnGuardar = document.getElementById('btnGuardar');
 const btnModificar = document.getElementById('btnModificar');
@@ -14,11 +13,11 @@ const fechaSancion = document.getElementById('san_fecha_sancion');
 const startDate = document.getElementById('startDate');
 const endDate = document.getElementById('endDate');
 const btnAplicarFiltro = document.getElementById('btnAplicarFiltro');
+const selectGrados = document.getElementById('filtroGrado');
+const selectAlumnos = document.getElementById('san_catalogo');
 
-// Configurar fecha máxima como la actual
 fechaSancion.max = new Date().toISOString().split('T')[0];
 
-// Inicialización del DataTable
 const datatable = new DataTable('#tablaSancion', {
     data: null,
     language: lenguaje,
@@ -85,8 +84,8 @@ const datatable = new DataTable('#tablaSancion', {
                         data-id="${row.san_id}"
                         data-san_catalogo="${row.san_catalogo}"
                         data-san_fecha_sancion="${row.san_fecha_sancion}"
-                        data-san_falta_id="${row.san_falta_id}"
-                        data-san_instructor_ordena="${row.san_instructor_ordena}"
+                        data-san_falta_id="${row.categoria_falta}"
+                        data-san_instructor_ordena="${row.gra_orden}"
                         data-san_horas_arresto="${row.san_horas_arresto || ''}"
                         data-san_demeritos="${row.san_demeritos || ''}"
                         data-san_observaciones="${row.san_observaciones || ''}">
@@ -95,35 +94,20 @@ const datatable = new DataTable('#tablaSancion', {
                     <button class='btn btn-danger btn-sm eliminar' data-id="${row.san_id}">
                         <i class='bi bi-trash' title='ELIMINAR'></i>
                     </button>
-                </div>
-            `
+                </div>`
         }
     ]
 });
 
-// Función para actualizar campos de sanción según la falta seleccionada
 const actualizarSancion = () => {
     const selectedOption = selectFalta.options[selectFalta.selectedIndex];
-
-    if (!selectFalta.value) {
-        formulario.san_horas_arresto.value = '';
-        formulario.san_demeritos.value = '';
-        return;
-    }
-
-    const horas = selectedOption.dataset.horas;
-    const demeritos = selectedOption.dataset.demeritos;
-
-    formulario.san_horas_arresto.value = horas || '';
-    formulario.san_demeritos.value = demeritos || '';
+    formulario.san_horas_arresto.value = selectedOption?.dataset?.horas || '';
+    formulario.san_demeritos.value = selectedOption?.dataset?.demeritos || '';
 };
 
-// Función para buscar sanciones
 const buscar = async () => {
     try {
         let url = "/car_escuela/API/sancion/buscar";
-        
-        // Agregar parámetros de filtro si existen
         if (startDate.value && endDate.value) {
             const params = new URLSearchParams({
                 startDate: startDate.value,
@@ -138,8 +122,6 @@ const buscar = async () => {
         datatable.clear();
         if (data.datos && Array.isArray(data.datos)) {
             datatable.rows.add(data.datos).draw();
-        } else {
-            console.log('No hay datos o no es un array');
         }
     } catch (error) {
         console.error('Error:', error);
@@ -150,10 +132,8 @@ const buscar = async () => {
     }
 };
 
-// Función para guardar sanción
 const guardar = async (e) => {
     e.preventDefault();
-
     try {
         const formData = new FormData(formulario);
         const response = await fetch("/car_escuela/API/sancion/guardar", {
@@ -163,18 +143,14 @@ const guardar = async (e) => {
 
         const data = await response.json();
 
+        Toast.fire({
+            icon: data.codigo === 1 ? 'success' : 'error',
+            title: data.mensaje
+        });
+
         if (data.codigo === 1) {
-            Toast.fire({
-                icon: 'success',
-                title: data.mensaje
-            });
             formulario.reset();
             buscar();
-        } else {
-            Toast.fire({
-                icon: 'error',
-                title: data.mensaje
-            });
         }
     } catch (error) {
         console.error('Error:', error);
@@ -185,22 +161,24 @@ const guardar = async (e) => {
     }
 };
 
-// Función para traer datos al formulario
 const traerDatos = (e) => {
     const botonModificar = e.target.closest('.modificar');
     if (!botonModificar) return;
 
-    const dataset = botonModificar.dataset;
+    const fila = datatable.row(botonModificar.closest('tr')).data();
+    
+    formulario.san_id.value = fila.san_id;
+    formulario.san_catalogo.value = fila.san_catalogo;
+    formulario.san_fecha_sancion.value = fila.san_fecha_sancion;
+    formulario.san_falta_id.value = fila.san_falta_id;            // Corregido
+    formulario.san_instructor_ordena.value = fila.san_instructor_ordena;  // Corregido
+    formulario.san_horas_arresto.value = fila.san_horas_arresto;
+    formulario.san_demeritos.value = fila.san_demeritos;
+    formulario.san_observaciones.value = fila.san_observaciones || '';
 
-    formulario.san_id.value = dataset.id;
-    formulario.san_catalogo.value = dataset.san_catalogo;
-    formulario.san_fecha_sancion.value = dataset.san_fecha_sancion;
-    formulario.san_falta_id.value = dataset.san_falta_id;
-    formulario.san_instructor_ordena.value = dataset.san_instructor_ordena;
-    formulario.san_horas_arresto.value = dataset.san_horas_arresto || '';
-    formulario.san_demeritos.value = dataset.san_demeritos || '';
-    formulario.san_observaciones.value = dataset.san_observaciones || '';
+    selectFalta.dispatchEvent(new Event('change'));
 
+    // UI updates...
     document.querySelector('#tablaSancion').closest('.row').style.display = 'none';
     btnGuardar.parentElement.style.display = 'none';
     btnGuardar.disabled = true;
@@ -210,7 +188,6 @@ const traerDatos = (e) => {
     btnCancelar.disabled = false;
 };
 
-// Función para cancelar modificación
 const cancelar = () => {
     formulario.reset();
     btnGuardar.parentElement.style.display = '';
@@ -226,35 +203,32 @@ const cancelar = () => {
     }
 };
 
-// Función para modificar sanción
 const modificar = async (e) => {
     e.preventDefault();
-
+    
     try {
         const formData = new FormData(formulario);
+        console.log("Datos a enviar:", Object.fromEntries(formData));
+        
         const response = await fetch("/car_escuela/API/sancion/modificar", {
             method: 'POST',
             body: formData
         });
 
         const data = await response.json();
+        console.log("Respuesta del servidor:", data);
+
+        Toast.fire({
+            icon: data.codigo === 1 ? 'success' : 'error',
+            title: data.mensaje
+        });
 
         if (data.codigo === 1) {
-            Toast.fire({
-                icon: 'success',
-                title: data.mensaje
-            });
-            formulario.reset();
-            buscar();
+            await buscar();
             cancelar();
-        } else {
-            Toast.fire({
-                icon: 'error',
-                title: data.mensaje
-            });
         }
     } catch (error) {
-        console.error('Error:', error);
+        console.error("Error completo:", error);
         Toast.fire({
             icon: 'error',
             title: 'Error al modificar la sanción'
@@ -262,7 +236,6 @@ const modificar = async (e) => {
     }
 };
 
-// Función para eliminar sanción
 const eliminar = async (id) => {
     const result = await Swal.fire({
         title: '¿Está seguro?',
@@ -305,51 +278,6 @@ const eliminar = async (id) => {
     }
 };
 
-// Event Listeners
-btnAplicarFiltro.addEventListener('click', () => {
-    if (!startDate.value || !endDate.value) {
-        Toast.fire({
-            icon: 'warning',
-            title: 'Por favor seleccione ambas fechas'
-        });
-        return;
-    }
-    
-    if (startDate.value > endDate.value) {
-        Toast.fire({
-            icon: 'warning',
-            title: 'La fecha inicial no puede ser mayor que la fecha final'
-        });
-        return;
-    }
-    
-    buscar();
-});
-
-formulario.addEventListener('submit', guardar);
-btnModificar.addEventListener('click', modificar);
-btnCancelar.addEventListener('click', cancelar);
-selectFalta.addEventListener('change', actualizarSancion);
-
-document.querySelector('#tablaSancion').addEventListener('click', (e) => {
-    if (e.target.closest('.modificar')) {
-        traerDatos(e);
-    } else if (e.target.closest('.eliminar')) {
-        const id = e.target.closest('.eliminar').dataset.id;
-        eliminar(id);
-    }
-});
-
-// Limpiar filtros al cargar la página
-window.addEventListener('load', () => {
-    startDate.value = '';
-    endDate.value = '';
-    buscar();
-});
-
-const selectGrados = document.getElementById('filtroGrado');
-const selectAlumnos = document.getElementById('san_catalogo');
-
 const buscarPorGrados = async (gradoId = '') => {
     try {
         const url = `/car_escuela/API/alumno/buscar${gradoId ? `?grado=${gradoId}` : ''}`;
@@ -380,7 +308,6 @@ const buscarPorGrados = async (gradoId = '') => {
         } else {
             selectAlumnos.disabled = true;
             selectAlumnos.innerHTML = '<option value="">No hay alumnos disponibles</option>';
-            console.error('No se recibieron datos válidos');
         }
     } catch (error) {
         console.error('Error al buscar alumnos:', error);
@@ -393,11 +320,55 @@ const buscarPorGrados = async (gradoId = '') => {
     }
 };
 
-// Evento para el filtro de grados
-selectGrados.addEventListener('change', function() {
-    const gradoId = this.value;
-    buscarPorGrados(gradoId);
+// Event Listeners
+btnAplicarFiltro.addEventListener('click', () => {
+    if (!startDate.value || !endDate.value) {
+        Toast.fire({
+            icon: 'warning',
+            title: 'Por favor seleccione ambas fechas'
+        });
+        return;
+    }
+    
+    if (startDate.value > endDate.value) {
+        Toast.fire({
+            icon: 'warning',
+            title: 'La fecha inicial no puede ser mayor que la fecha final'
+        });
+        return;
+    }
+    
+    buscar();
 });
 
-// Carga inicial de alumnos
-buscarPorGrados();
+formulario.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (formulario.san_id.value) {
+        modificar(e);
+    } else {
+        guardar(e);
+    }
+});
+
+btnModificar.addEventListener('click', modificar);
+btnCancelar.addEventListener('click', cancelar);
+selectFalta.addEventListener('change', actualizarSancion);
+selectGrados.addEventListener('change', function() {
+    buscarPorGrados(this.value);
+});
+
+document.querySelector('#tablaSancion').addEventListener('click', (e) => {
+    if (e.target.closest('.modificar')) {
+        traerDatos(e);
+    } else if (e.target.closest('.eliminar')) {
+        const id = e.target.closest('.eliminar').dataset.id;
+        eliminar(id);
+    }
+});
+
+window.addEventListener('load', () => {
+    startDate.value = '';
+    endDate.value = '';
+    buscar();
+    buscarPorGrados();
+});

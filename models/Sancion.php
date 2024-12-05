@@ -83,6 +83,8 @@ class Sancion extends ActiveRecord {
     s.san_fecha_sancion,
     s.san_horas_arresto,
     s.san_demeritos,
+    s.san_falta_id,           
+    s.san_instructor_ordena,
     a.alu_catalogo,
     TRIM(a.alu_primer_nombre || ' ' ||
          NVL(a.alu_segundo_nombre, '') || ' ' ||

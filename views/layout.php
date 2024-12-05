@@ -82,7 +82,7 @@
                             </li>
                         </ul>
                     </li>
-                    
+
                     <!-- Faltas Dropdown -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle fw-bold" href="#" data-bs-toggle="dropdown">
@@ -103,6 +103,16 @@
                             </li>
                             <li><a class="dropdown-item" href="/car_escuela/falta">
                                     <i class="bi bi-list-check"></i> Todas las Faltas
+                                </a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle fw-bold" href="#" data-bs-toggle="dropdown">
+                            <i class="bi bi-info-circle"></i> Ayuda
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <li><a class="dropdown-item" href="#">
+                                    <i class="bi bi-book"></i> Manual de Usuario
                                 </a></li>
                         </ul>
                     </li>
