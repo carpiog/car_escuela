@@ -5,10 +5,12 @@ use Controllers\AlumnoController;
 use MVC\Router;
 use Controllers\AppController;
 use Controllers\ArrestoController;
+use Controllers\ConductaController;
 use Controllers\DemeritoController;
 use Controllers\EstadisticaController;
 use Controllers\FaltaController;
 use Controllers\InstructorController;
+use Controllers\ManualController;
 use Controllers\ReporteController;
 use Controllers\SancionController;
 
@@ -67,6 +69,15 @@ $router->get('/arresto', [ArrestoController::class, 'index']);
 $router->get('/API/arresto/listar', [ArrestoController::class, 'listarAPI']); 
 $router->post('/API/arresto/actualizar', [ArrestoController::class, 'actualizarAPI']);
 $router->get('/arresto/nomina-pdf', [ArrestoController::class, 'nominaPDF']);
+
+//MANUAL DE USUARIO
+$router->get('/manual', [ManualController::class, 'index']);
+
+// RUTAS PARA CONDUCTAS
+$router->get('/conducta', [ConductaController::class, 'index']);
+$router->get('/API/conducta/buscar', [ConductaController::class, 'buscarAPI']);
+$router->get('/conducta/pdf', [ConductaController::class, 'conductaPDF']);
+
 
 
 // Comprueba y valida las rutas, que existan y les asigna las funciones del Controlador

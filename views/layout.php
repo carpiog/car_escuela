@@ -51,6 +51,11 @@
                                     <i class="bi bi-list-ol"></i> Por Grados
                                 </a>
                             </li>
+                            <li>
+                                <a class="dropdown-item" href="/car_escuela/conducta">
+                                    <i class="bi bi-list-ol"></i> Por conducta General
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">

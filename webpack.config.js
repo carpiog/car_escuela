@@ -13,6 +13,8 @@ module.exports = {
     'js/demerito/index': './src/js/demerito/index.js',
     'js/estadisticas/index': './src/js/estadisticas/index.js',
     'js/arresto/index': './src/js/arresto/index.js',
+    'js/manual/index': './src/js/manual/index.js',
+    'js/conducta/index': './src/js/conducta/index.js',
   },
   output: {
     filename: '[name].js',
